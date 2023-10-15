@@ -7,4 +7,3 @@ const ApiProvider = ({ children }) => {
 };
 
 export default ApiProvider;
-

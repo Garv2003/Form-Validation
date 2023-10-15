@@ -13,7 +13,7 @@ const App = () => {
           <Route
             path="/"
             element={
-              localStorage.getItem("info") ? <Home /> : <Navigate to="/login" />
+              localStorage.getItem("token") ? <Home /> : <Navigate to="/login" />
             }
           />
           <Route path="/login" element={<Login />} />

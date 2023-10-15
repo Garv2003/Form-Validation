@@ -1,23 +1,26 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/Slices/UserSlice";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import axios from "axios";
 
 const Home = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const res = axios.get("http://localhost:5000/api/users/login", {
-      withCredentials: true,
-      headers: {
-        Authorization: localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-    });
-  }, []);
+    async function fetchdata() {
+      await axios.get("http://localhost:5000/api/users/userinfo", {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+    }
+    fetchdata();
+  }, [localStorage.getItem("token")]);
 
   const data = useSelector((state) => state.user);
   const { email, password, username } = data;
@@ -27,9 +30,7 @@ const Home = () => {
       <div className="home_page">
         <h4>
           {" "}
-          Welcome <span>{data.user.username}</span>
-          {data.password}
-          {console.log(data)}
+          Welcome <span>{<Skeleton /> || data.user.username}</span>
         </h4>
         <button
           onClick={() => {
