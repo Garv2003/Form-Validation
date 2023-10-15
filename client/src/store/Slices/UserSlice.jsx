@@ -8,13 +8,11 @@ const userslice = createSlice({
 
   reducers: {
     login: (state, action) => {
-      state.user = action.payload;
+      state.user.push(action.payload);
     },
     logout: (state) => {
-      state.user = [];
+      state.user = "";
       localStorage.removeItem("token");
-      // window.location.href = "/login";
-     
     },
   },
 });

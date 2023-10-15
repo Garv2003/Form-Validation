@@ -2,35 +2,39 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { logout } from "../../store/Slices/UserSlice";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import { logout, login } from "../../store/Slices/UserSlice";
 import axios from "axios";
 
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const data = useSelector((state) => state.user);
 
   useEffect(() => {
     async function fetchdata() {
-      await axios.get("http://localhost:5000/api/users/userinfo", {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
+      await axios
+        .get("http://localhost:5000/api/users/userinfo", {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          dispatch(login({ payload: res.data.user }));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
     fetchdata();
-  }, [localStorage.getItem("token")]);
-
-  const data = useSelector((state) => state.user);
-  const { email, password, username } = data;
+  }, []);
 
   return (
     <>
       <div className="home_page">
         <h4>
           {" "}
-          Welcome <span>{<Skeleton /> || data.user.username}</span>
+          Welcome <span>{data.name}</span>
+          <div>{data.email}</div>
         </h4>
         <button
           onClick={() => {

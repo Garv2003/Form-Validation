@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../config/keys");
 
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
@@ -53,7 +52,7 @@ module.exports.Login = async (req, res) => {
         };
         jwt.sign(
           payload,
-          keys.secretOrKey,
+          process.env.TOKEN_KEY,
           {
             expiresIn: 31556926,
           },
@@ -72,8 +71,7 @@ module.exports.Login = async (req, res) => {
 };
 
 module.exports.UserInfo = (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
-  console.log(token);
+  const token = req.headers.authorization.split(" ")[1];
   if (!token) {
     return res.json({ status: false });
   }
@@ -81,9 +79,7 @@ module.exports.UserInfo = (req, res) => {
     if (err) {
       return res.json({ status: false });
     } else {
-      console.log(data);
-      const user = await User.findById(data.id);
-      console.log(user);
+      const user = await User.findById(data.id).select("-password");
       if (user) return res.json({ status: true, user: user });
       else return res.json({ status: false });
     }
