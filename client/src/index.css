@@ -118,11 +118,11 @@ span a {
   background-color: rgba(0, 212, 255, 1);
 }
 
-.form_error{
+.form_error {
   font-size: 12px;
   color: red;
 }
-.loading{
+.loading {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -135,8 +135,8 @@ span a {
   gap: 1rem;
 }
 
-@media only screen and (max-width: 1200px){
-  .home_page{
+@media only screen and (max-width: 1200px) {
+  .home_page {
     font-size: 1.5rem;
   }
   .home_page button {
@@ -145,3 +145,25 @@ span a {
   }
 }
 
+@media screen and (max-width: 400px) {
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+  }
+  body {
+    display: static;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(
+      90deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(143, 187, 204, 1) 35%,
+      rgba(0, 212, 255, 1) 100%
+    );
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+  .form_container {
+    width: 100%;
+  }
+}
