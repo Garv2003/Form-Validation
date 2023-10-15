@@ -1,15 +1,10 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { logout, login } from "../../store/Slices/UserSlice";
 import axios from "axios";
 
 const Home = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const data = useSelector((state) => state.user);
-
+  const [data, setdata] = useState([]);
   useEffect(() => {
     async function fetchdata() {
       await axios
@@ -19,7 +14,7 @@ const Home = () => {
           },
         })
         .then((res) => {
-          dispatch(login({ payload: res.data.user }));
+          setdata(res.data.user);
         })
         .catch((err) => {
           console.log(err);
@@ -32,13 +27,12 @@ const Home = () => {
     <>
       <div className="home_page">
         <h4>
-          {" "}
           Welcome <span>{data.name}</span>
           <div>{data.email}</div>
         </h4>
         <button
           onClick={() => {
-            dispatch(logout());
+            localStorage.removeItem("token");
             navigate("/login");
           }}
         >
