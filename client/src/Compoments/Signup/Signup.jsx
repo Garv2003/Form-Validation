@@ -26,7 +26,7 @@ const Signup = () => {
             setLoading(false);
           });
       } catch (error) {
-        formik.resetForm();
+        // formik.resetForm();
         setLoading(false);
       }
     },

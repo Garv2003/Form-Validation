@@ -40,8 +40,11 @@ module.exports.Login = async (req, res) => {
   }
   const email = req.body.email;
   const password = req.body.password;
+  console.log(req.body)
   await User.findOne({ email }).then((user) => {
+    console.log(user);
     if (!user) {
+      console.log("Email not found");
       return res.status(404).json({ error: "Email not found" });
     }
     bcrypt.compare(password, user.password).then((isMatch) => {
@@ -63,7 +66,9 @@ module.exports.Login = async (req, res) => {
             });
           }
         );
+        console.log("Password correct");
       } else {
+        console.log("Password incorrect");
         return res.status(400).json({ error: "Password incorrect" });
       }
     });

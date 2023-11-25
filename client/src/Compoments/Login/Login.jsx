@@ -20,20 +20,21 @@ const Login = () => {
     onSubmit: async (values, { resetForm }) => {
       try {
         resetForm({ values: "" });
-        toast.error("This is an error!");
         setLoading(true);
-        const res = await axios.post(SERVER_URL + "/api/users/login", values);
+        const res = await axios.post(SERVER_URL + "/api/users/login", values)
         if (res.status === 200) {
+          toast.success(res.data.message);
           localStorage.setItem("token", res.data.token);
           window.location.assign("/");
         } else if (res.status === 400) {
           toast.error(res.data.message);
-        } else {
+        } else if(res.status === 404){
+          console.log(res.data);
           toast.error("Something went wrong");
         }
         setLoading(false);
       } catch (err) {
-        toast.error(err.response.data.message);
+        toast.error("Something went wrong");
         resetForm({ values: "" });
         setLoading(false);
       }
