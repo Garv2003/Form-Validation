@@ -5,6 +5,8 @@ import { RotatingLines } from "react-loader-spinner";
 import axios from "axios";
 import { signschema } from "../../Schmea";
 
+const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
+
 const Signup = () => {
   const [loading, setLoading] = React.useState(false);
   const formik = useFormik({
@@ -18,13 +20,14 @@ const Signup = () => {
       setLoading(true);
       try {
         await axios
-          .post("http://localhost:5000/api/users/register", values)
-          .then((res) => {
+          .post(SERVER_URL+"/api/users/register", values)
+          .then(() => {
             formik.resetForm();
             setLoading(false);
           });
       } catch (error) {
-        console.log(error);
+        formik.resetForm();
+        setLoading(false);
       }
     },
     validationSchema: signschema,

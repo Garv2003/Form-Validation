@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 import { RotatingLines } from "react-loader-spinner";
 import "./Login.css";
-import ApiContext from "../../Context/ApiContext";
 import { useFormik } from "formik";
 import { loginschema } from "../../Schmea";
 
+const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
+
 const Login = () => {
-  const api = React.useContext(ApiContext);
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
@@ -17,22 +18,25 @@ const Login = () => {
       password: "",
     },
     onSubmit: async (values, { resetForm }) => {
-      resetForm({ values: "" });
-      setLoading(true);
-      const res = await axios.post(
-        "http://localhost:5000/api/users/login",
-        values
-      );
-      console.log(res);
-      if (res.status === 200) {
-        localStorage.setItem("token", res.data.token);
-        window.location.assign("/");
-      } else if (res.status === 400) {
-        toast.error(res.data.message);
-      } else {
-        toast.error("Something went wrong");
+      try {
+        resetForm({ values: "" });
+        toast.error("This is an error!");
+        setLoading(true);
+        const res = await axios.post(SERVER_URL + "/api/users/login", values);
+        if (res.status === 200) {
+          localStorage.setItem("token", res.data.token);
+          window.location.assign("/");
+        } else if (res.status === 400) {
+          toast.error(res.data.message);
+        } else {
+          toast.error("Something went wrong");
+        }
+        setLoading(false);
+      } catch (err) {
+        toast.error(err.response.data.message);
+        resetForm({ values: "" });
+        setLoading(false);
       }
-      setLoading(false);
     },
     validationSchema: loginschema,
   });
@@ -87,6 +91,7 @@ const Login = () => {
               Already have an account? <Link to={"/signup"}>Signup</Link>
             </span>
           </form>
+          <Toaster />
         </div>
       )}
     </>
