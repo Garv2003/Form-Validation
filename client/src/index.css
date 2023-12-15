@@ -164,6 +164,6 @@ span a {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
   .form_container {
-    width: 100%;
+    width: 100vw;
   }
 }
