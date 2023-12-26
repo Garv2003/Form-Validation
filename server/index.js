@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: process.env.CLIENT_URL
+    origin: process.env.CLIENT_URL,
   })
 );
 app.use(helmet());
@@ -35,6 +35,10 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+app.get("/", (req, res) => {
+  res.send("For testing purposes only");
+});
 
 app.use(passport.initialize());
 require("./config/passport")(passport);
