@@ -37,7 +37,7 @@ mongoose
   });
 
 app.get("/", (req, res) => {
-  res.send("For testing purposes only");
+  res.json("For testing purposes only");
 });
 
 app.use(passport.initialize());
