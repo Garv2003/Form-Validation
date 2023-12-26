@@ -25,7 +25,7 @@ app.use(
 app.use(helmet());
 
 mongoose
-  .connect(process.env.MONGODB_URL, { useNewUrlParser: true })
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("MongoDB successfully connected");
     app.listen(process.env.PORT || 5000, () => {
