@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { RotatingLines } from "react-loader-spinner";
-import "./Login.css";
 import { useFormik } from "formik";
 import { loginschema } from "../../Schmea";
 
