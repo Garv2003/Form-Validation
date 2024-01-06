@@ -7,12 +7,15 @@ const User = require("../models/User");
 
 module.exports.Signup = async (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
+  console.log(errors)
+  console.log(isValid)
   if (!isValid) {
     return res.status(400).json(errors);
   }
   await User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
-      return res.status(400).json({ email: "Email already exists" });
+      console.log("Email already exists");
+      return res.status(400).json({ msg: "Email already exists" });
     } else {
       const newUser = new User({
         name: req.body.name,
@@ -35,6 +38,8 @@ module.exports.Signup = async (req, res) => {
 
 module.exports.Login = async (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
+  console.log(errors)
+  console.log(isValid)
   if (!isValid) {
     return res.status(400).json(errors);
   }
