@@ -7,8 +7,6 @@ const User = require("../models/User");
 
 module.exports.Signup = async (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
-  console.log(errors)
-  console.log(isValid)
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -38,8 +36,6 @@ module.exports.Signup = async (req, res) => {
 
 module.exports.Login = async (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
-  console.log(errors)
-  console.log(isValid)
   if (!isValid) {
     return res.status(400).json(errors);
   }
