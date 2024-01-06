@@ -67,9 +67,7 @@ module.exports.Login = async (req, res) => {
             });
           }
         );
-        console.log("Password correct");
       } else {
-        console.log("Password incorrect");
         return res.status(400).json({ error: "Password incorrect" });
       }
     });
