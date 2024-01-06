@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { RotatingLines } from "react-loader-spinner";
 import axios from "axios";
@@ -10,6 +11,7 @@ const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
 
 const Signup = () => {
   const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -20,8 +22,15 @@ const Signup = () => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        const res = await axios.post(SERVER_URL + "/api/users/signup", values);
-        if (res.status === 201) {
+        const res = await axios.post(
+          SERVER_URL + "/api/users/register",
+          values
+        );
+        if (res.status === 201 || res.status === 200) {
+          toast.success("Account Created Successfully");
+          formik.resetForm();
+          setLoading(false);
+          navigate("/login");
           return;
         } else if (res.status === 400) {
           toast.error("Invalid Credentials");
@@ -29,7 +38,7 @@ const Signup = () => {
           toast.error("Something went wrong");
         }
       } catch (error) {
-        formik.resetForm();
+        console.log(error);
         toast.error("Something went wrong");
         setLoading(false);
       }
@@ -40,7 +49,7 @@ const Signup = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer position="bottom-center" autoClose={5000} />
       {loading ? (
         <div className="loading">
           <RotatingLines
