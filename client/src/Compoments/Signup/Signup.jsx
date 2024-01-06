@@ -4,7 +4,8 @@ import { useFormik } from "formik";
 import { RotatingLines } from "react-loader-spinner";
 import axios from "axios";
 import { signschema } from "../../Schmea";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
 
 const Signup = () => {
@@ -19,14 +20,17 @@ const Signup = () => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        await axios
-          .post(SERVER_URL+"/api/users/register", values)
-          .then(() => {
-            formik.resetForm();
-            setLoading(false);
-          });
+        const res = await axios.post(SERVER_URL + "/api/users/signup", values);
+        if (res.status === 201) {
+          return;
+        } else if (res.status === 400) {
+          toast.error("Invalid Credentials");
+        } else if (res.status === 404) {
+          toast.error("Something went wrong");
+        }
       } catch (error) {
-        // formik.resetForm();
+        formik.resetForm();
+        toast.error("Something went wrong");
         setLoading(false);
       }
     },
@@ -36,6 +40,7 @@ const Signup = () => {
 
   return (
     <>
+      <ToastContainer />
       {loading ? (
         <div className="loading">
           <RotatingLines

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { RotatingLines } from "react-loader-spinner";
 import { useFormik } from "formik";
 import { loginschema } from "../../Schmea";
@@ -20,15 +21,17 @@ const Login = () => {
       try {
         resetForm({ values: "" });
         setLoading(true);
-        const res = await axios.post(SERVER_URL + "/api/users/login", values)
+        const res = await axios.post(SERVER_URL + "/api/users/login", values);
         if (res.status === 200) {
-          toast.success(res.data.message);
-          localStorage.setItem("token", res.data.token);
-          window.location.assign("/");
+          toast.success("Login Successfull");
+          setTimeout(() => {
+            localStorage.setItem("token", res.data.token);
+            window.location.assign("/");
+          }, 2000);
+          return;
         } else if (res.status === 400) {
-          toast.error(res.data.message);
-        } else if(res.status === 404){
-          console.log(res.data);
+          toast.error("Invalid Credentials");
+        } else if (res.status === 404) {
           toast.error("Something went wrong");
         }
         setLoading(false);
@@ -91,9 +94,9 @@ const Login = () => {
               Already have an account? <Link to={"/signup"}>Signup</Link>
             </span>
           </form>
-          <Toaster />
         </div>
       )}
+      <ToastContainer position="bottom-center" autoClose={5000} />
     </>
   );
 };
