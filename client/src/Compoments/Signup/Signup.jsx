@@ -5,8 +5,7 @@ import { useFormik } from "formik";
 import { RotatingLines } from "react-loader-spinner";
 import axios from "axios";
 import { signschema } from "../../Schmea";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
 
 const Signup = () => {
@@ -49,7 +48,6 @@ const Signup = () => {
 
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={5000} />
       {loading ? (
         <div className="loading">
           <RotatingLines

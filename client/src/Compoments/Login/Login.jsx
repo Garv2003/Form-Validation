@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { RotatingLines } from "react-loader-spinner";
 import { useFormik } from "formik";
 import { loginschema } from "../../Schmea";
-
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
 
 const Login = () => {
@@ -22,21 +20,14 @@ const Login = () => {
         resetForm({ values: "" });
         setLoading(true);
         const res = await axios.post(SERVER_URL + "/api/users/login", values);
-        if (res.status === 200) {
-          toast.success("Login Successfull");
-          setTimeout(() => {
-            localStorage.setItem("token", res.data.token);
-            window.location.assign("/");
-          }, 2000);
-          return;
-        } else if (res.status === 400) {
-          toast.error("Invalid Credentials");
-        } else if (res.status === 404) {
-          toast.error("Something went wrong");
-        }
+        toast.success("Login Successfull");
+        setTimeout(() => {
+          localStorage.setItem("token", res.data.token);
+          window.location.assign("/");
+        }, 2000);
         setLoading(false);
       } catch (err) {
-        toast.error("Something went wrong");
+        toast.error(err.response.data.error);
         resetForm({ values: "" });
         setLoading(false);
       }
@@ -66,7 +57,7 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
-                autoComplete="off"
+                autoComplete="on"
                 value={formik.values.email}
                 placeholder="Enter your email"
                 onChange={formik.handleChange}
@@ -80,7 +71,6 @@ const Login = () => {
               <input
                 type="password"
                 name="password"
-                autoComplete="off"
                 value={formik.values.password}
                 placeholder="Enter your password"
                 onChange={formik.handleChange}
@@ -89,6 +79,9 @@ const Login = () => {
                 <p className="form_error">{formik.errors.password}</p>
               ) : null}
             </div>
+            <Link to="/forgot" className="forgot_password">
+              Forgot Password?
+            </Link>
             <button type="submit">Submit</button>
             <span>
               Already have an account? <Link to={"/signup"}>Signup</Link>
@@ -96,7 +89,6 @@ const Login = () => {
           </form>
         </div>
       )}
-      <ToastContainer position="bottom-center" autoClose={5000} />
     </>
   );
 };

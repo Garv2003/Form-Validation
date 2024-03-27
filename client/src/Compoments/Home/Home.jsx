@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
 
 const Home = () => {
@@ -22,6 +21,12 @@ const Home = () => {
           },
         })
         .then((res) => {
+          if (res.data.status === false) {
+            setloading(false);
+            toast.error("Session Expired, Please Login Again");
+            localStorage.removeItem("token");
+            navigate("/login");
+          }
           setdata(res.data.user);
           setloading(false);
         })
@@ -52,8 +57,8 @@ const Home = () => {
         ) : (
           <>
             <h4>
-              Welcome <span>{data.name}</span>
-              <div>{data.email}</div>
+              Welcome <span>{data?.name}</span>
+              <div>{data?.email}</div>
             </h4>
             <button
               onClick={() => {
