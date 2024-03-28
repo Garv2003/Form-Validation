@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
 import { toast } from "react-toastify";
-const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Home = () => {
     async function fetchdata() {
       setloading(true);
       await axios
-        .get(SERVER_URL + "/api/users/userinfo", {
+        .get(import.meta.env.VITE_APP_SERVER_API + "/api/users/userinfo", {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
@@ -40,6 +40,10 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Home</title>
+        <meta name="description" content="Home Page" />
+      </Helmet>
       <div className="home_page">
         {loading ? (
           <h5 style={{ textAlign: "center" }}>

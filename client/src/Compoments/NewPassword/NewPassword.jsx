@@ -5,7 +5,7 @@ import { RotatingLines } from "react-loader-spinner";
 import { useFormik } from "formik";
 import { newpasswordschema } from "../../Schmea";
 import { Link, useLocation } from "react-router-dom";
-const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
+import { Helmet } from "react-helmet";
 
 const NewPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -31,10 +31,13 @@ const NewPassword = () => {
       try {
         resetForm({ values: "" });
         setLoading(true);
-        const res = await axios.post(SERVER_URL + "/api/users/resetpassword", {
-          password: values.password,
-          token: token,
-        });
+        const res = await axios.post(
+          import.meta.env.VITE_APP_SERVER_API + "/api/users/resetpassword",
+          {
+            password: values.password,
+            token: token,
+          }
+        );
         setSuccess(true);
         toast.success(res.data.message);
         setLoading(false);
@@ -50,6 +53,10 @@ const NewPassword = () => {
 
   return (
     <>
+      <Helmet>
+        <title>New Password</title>
+        <meta name="description" content="New Password Page" />
+      </Helmet>
       {loading ? (
         <div className="loading">
           <RotatingLines

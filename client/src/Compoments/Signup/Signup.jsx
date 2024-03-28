@@ -6,7 +6,7 @@ import { RotatingLines } from "react-loader-spinner";
 import axios from "axios";
 import { signschema } from "../../Schmea";
 import { toast } from "react-toastify";
-const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
+import { Helmet } from "react-helmet";
 
 const Signup = () => {
   const [loading, setLoading] = React.useState(false);
@@ -22,7 +22,7 @@ const Signup = () => {
       setLoading(true);
       try {
         const res = await axios.post(
-          SERVER_URL + "/api/users/register",
+          import.meta.env.VITE_APP_SERVER_API + "/api/users/register",
           values
         );
         if (res.status === 201 || res.status === 200) {
@@ -48,6 +48,10 @@ const Signup = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Signup</title>
+        <meta name="description" content="Signup Page" />
+      </Helmet>
       {loading ? (
         <div className="loading">
           <RotatingLines

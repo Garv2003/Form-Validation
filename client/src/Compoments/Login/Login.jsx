@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { RotatingLines } from "react-loader-spinner";
 import { useFormik } from "formik";
 import { loginschema } from "../../Schmea";
-const SERVER_URL = import.meta.env.VITE_APP_SERVER_API;
+import { Helmet } from "react-helmet";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,10 @@ const Login = () => {
       try {
         resetForm({ values: "" });
         setLoading(true);
-        const res = await axios.post(SERVER_URL + "/api/users/login", values);
+        const res = await axios.post(
+          import.meta.env.VITE_APP_SERVER_API + "/api/users/login",
+          values
+        );
         toast.success("Login Successfull");
         setTimeout(() => {
           localStorage.setItem("token", res.data.token);
@@ -37,6 +40,10 @@ const Login = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Login</title>
+        <meta name="description" content="Login Page" />
+      </Helmet>
       {loading ? (
         <div className="loading">
           <RotatingLines
